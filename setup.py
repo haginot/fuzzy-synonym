@@ -17,6 +17,6 @@ setup(
     packages=['fuzzy_synonym'],
     long_description=read('README.md'),
     long_description_content_type="text/markdown",
-    install_requires=['numpy', 'pandas'],
+    install_requires=['numpy', 'pandas', 'ndjson'],
     classifiers=[]
 )
