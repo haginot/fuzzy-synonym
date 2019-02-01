@@ -1,6 +1,7 @@
 import os
 import ndjson
 import fuzzy_synonym.constants as const
+import googletrans
 
 
 class Translator:
@@ -13,6 +14,8 @@ class Translator:
         self.dest = dest
         self.dict_path = dict_path
         self.dict_ja_en = self.read_dict()
+        self.dict_ja_en_update = {}
+        self.google_trans = googletrans.Translator()
 
     def read_dict(self):
         with open(self.dict_path, 'r') as dict_file:
@@ -20,11 +23,15 @@ class Translator:
             return {d[self.src]: d[self.dest] for d in dict_ls}
 
     def weite_dict(self):
-        pass
+        with open(self.dict_path, 'w') as dict_file:
+            ndjson.dump(self.dict_ja_en_update, dict_file)
 
     def translate(self, text):
         if text in self.dict_ja_en:
             return self.dict_ja_en[text]
         else:
-            return 'Unknown'
+            res = self.google_trans.translate(text, dest=self.dest, src=self.src)
+            self.dict_ja_en_update[text] = res.text
+            self.dict_ja_en.update(self.dict_ja_en_update)
+            return res.text
 
