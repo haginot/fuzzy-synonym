@@ -8,21 +8,21 @@ class Translator:
     def __init__(self,
                  dict_path: str = "translator/dictionary.ndjson",
                  src="ja",
-                 dest="en"
-                 ):
+                 dest="en"):
         self.src = src
         self.dest = dest
         self.dict_path = dict_path
-        self.dict_ja_en = self.read_dict()
+        # self.dict_ja_en = self.__read_dict()
+        self.dict_ja_en = {}
         self.dict_ja_en_update = {}
         self.google_trans = googletrans.Translator()
 
-    def read_dict(self):
+    def __read_dict(self):
         with open(self.dict_path, 'r') as dict_file:
             dict_ls = ndjson.load(dict_file)
-            return {d[self.src]: d[self.dest] for d in dict_ls}
+        return {d[self.src]: d[self.dest] for d in dict_ls}
 
-    def weite_dict(self):
+    def __write_dict(self):
         with open(self.dict_path, 'w') as dict_file:
             ndjson.dump(self.dict_ja_en_update, dict_file)
 
@@ -35,3 +35,5 @@ class Translator:
             self.dict_ja_en.update(self.dict_ja_en_update)
             return res.text
 
+    def __del__(self):
+        self.__write_dict()
