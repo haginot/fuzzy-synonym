@@ -8,7 +8,7 @@ class TestTranslator(unittest.TestCase):
 
     def test_tralslate(self):
         self.assertEqual(self.tr.translate('機械学習'), 'Machine learning')
-        # self.assertEqual(self.tr.translate('深層学習'), 'Deep learning')
+        self.assertEqual(self.tr.translate('深層学習'), 'Deep learning')
         self.assertEqual(self.tr.translate('ブロックチェーン'), 'Block chain')
 
 
